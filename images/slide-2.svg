@@ -1,84 +1,80 @@
-<svg width="800" height="420" xmlns="http://www.w3.org/2000/svg">
-
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Background -->
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#020617"/>
-      <stop offset="100%" stop-color="#0f172a"/>
+    <linearGradient id="paperBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
     </linearGradient>
-
-    <!-- Accent -->
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%">
-      <stop offset="0%" stop-color="#ef4444"/>
-      <stop offset="100%" stop-color="#dc2626"/>
+    <linearGradient id="purpleAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
     </linearGradient>
-
-    <!-- Shadow -->
-    <filter id="shadow">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.5"/>
+    <linearGradient id="orangeAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-20%" y="-20%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#0f172a" flood-opacity="0.2"/>
     </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="800" height="420" fill="url(#bg)"/>
+  <!-- Base -->
+  <rect width="800" height="400" fill="url(#paperBg)"/>
 
-  <!-- Top Accent -->
-  <rect x="0" y="0" width="800" height="5" fill="url(#accent)"/>
+  <!-- Decorative geometry -->
+  <polygon points="0,0 290,0 170,180 0,230" fill="#ede9fe"/>
+  <polygon points="800,0 560,0 650,140 800,220" fill="#dbeafe"/>
+  <circle cx="730" cy="340" r="120" fill="#ffedd5" opacity="0.75"/>
 
-  <!-- Main Headline -->
-  <text x="70" y="90" font-size="34" font-weight="800" fill="#f8fafc">
-    Grow Your Business Faster
-  </text>
-
-  <!-- Subheadline -->
-  <text x="70" y="125" font-size="16" fill="#94a3b8">
-    Smart advertising solutions to reach more customers
-  </text>
-
-  <!-- Divider -->
-  <line x1="70" y1="145" x2="730" y2="145" stroke="#1e293b"/>
-
-  <!-- Features -->
-  <text x="70" y="190" font-size="16" fill="#ef4444">•</text>
-  <text x="100" y="190" font-size="14" fill="#e2e8f0">
-    Campaign Management
-  </text>
-
-  <text x="70" y="220" font-size="16" fill="#ef4444">•</text>
-  <text x="100" y="220" font-size="14" fill="#e2e8f0">
-    Brand Partnerships
-  </text>
-
-  <text x="70" y="250" font-size="16" fill="#ef4444">•</text>
-  <text x="100" y="250" font-size="14" fill="#e2e8f0">
-    Promotions & Marketing Plans
-  </text>
-
-  <!-- Contact Card -->
-  <g filter="url(#shadow)">
-    <rect x="470" y="170" width="260" height="110" rx="14" fill="#111827" stroke="#374151"/>
+  <!-- Main info card -->
+  <g filter="url(#cardShadow)">
+    <rect x="56" y="52" width="688" height="296" rx="20" fill="#ffffff"/>
   </g>
 
-  <!-- Contact Title -->
-  <text x="490" y="205" font-size="14" fill="#9ca3af">
-    Contact Us
+  <!-- Left block -->
+  <rect x="56" y="52" width="268" height="296" rx="20" fill="url(#purpleAccent)"/>
+  <text x="86" y="116" font-size="30" font-weight="800" fill="#ffffff">
+    Make Your
+  </text>
+  <text x="86" y="152" font-size="30" font-weight="800" fill="#ffffff">
+    Brand Stand Out
+  </text>
+  <text x="86" y="186" font-size="14" fill="#ddd6fe">
+    Strategy-driven advertising
+  </text>
+  <text x="86" y="208" font-size="14" fill="#ddd6fe">
+    for measurable growth
   </text>
 
-  <!-- Email -->
-  <text x="490" y="240" font-size="20" font-weight="800" fill="#ffffff">
-    mmtw.cs@gmail.com
-  </text>
-
-  <!-- CTA Button -->
-  <g filter="url(#shadow)">
-    <rect x="70" y="300" width="260" height="50" rx="10" fill="url(#accent)"/>
+  <g filter="url(#cardShadow)">
+    <rect x="86" y="244" width="208" height="44" rx="22" fill="#ffffff"/>
   </g>
-
-  <text x="200" y="330" font-size="17" font-weight="700" fill="white" text-anchor="middle">
-    Start Advertising Today
+  <text x="190" y="272" font-size="15" font-weight="700" fill="#5b21b6" text-anchor="middle">
+    Start Promotion
   </text>
 
-  <!-- Bottom Accent -->
-  <rect x="70" y="370" width="100" height="4" fill="#ef4444"/>
+  <!-- Right block title -->
+  <text x="356" y="108" font-size="29" font-weight="800" fill="#0f172a">
+    Digital Ad Services
+  </text>
+  <text x="356" y="136" font-size="14" fill="#64748b">
+    Reach more customers with smart, creative campaigns
+  </text>
 
+  <!-- Service chips -->
+  <rect x="356" y="162" width="176" height="34" rx="17" fill="#eef2ff"/>
+  <text x="444" y="184" font-size="13" fill="#3730a3" text-anchor="middle">Campaign Management</text>
+
+  <rect x="542" y="162" width="172" height="34" rx="17" fill="#fff7ed"/>
+  <text x="628" y="184" font-size="13" fill="#c2410c" text-anchor="middle">Brand Partnerships</text>
+
+  <rect x="356" y="206" width="358" height="34" rx="17" fill="#ecfeff"/>
+  <text x="535" y="228" font-size="13" fill="#0f766e" text-anchor="middle">Promotion Strategy and Planning</text>
+
+  <!-- Contact panel -->
+  <rect x="356" y="258" width="358" height="62" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="376" y="283" font-size="12" fill="#64748b">Contact Email</text>
+  <text x="376" y="307" font-size="19" font-weight="700" fill="#0f172a">mmtw.cs@gmail.com</text>
+
+  <!-- Bottom accent -->
+  <rect x="56" y="347" width="688" height="5" rx="2.5" fill="url(#orangeAccent)"/>
 </svg>
