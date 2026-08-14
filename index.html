@@ -6,10 +6,10 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+        content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Mon Calendar</title>
+    <title>Mon Calendar Slideshow</title>
 
     <link
         rel="stylesheet"
@@ -28,7 +28,7 @@
 
                 <!-- =====================================
                      SLIDE 1
-                     CLICKABLE -> GOOGLE PLAY
+                     CLICKABLE GOOGLE PLAY LINK
                 ====================================== -->
 
                 <div
@@ -45,7 +45,6 @@
                         href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
                         class="slide-hit-area"
                         aria-label="Open Mon Calendar on Google Play"
-                        onclick="return openPlayStore(event);"
                     ></a>
 
                     <div class="slide-caption">
@@ -78,7 +77,7 @@
 
                 <!-- =====================================
                      SLIDE 3
-                     CLICKABLE -> GOOGLE PLAY
+                     CLICKABLE GOOGLE PLAY LINK
                 ====================================== -->
 
                 <div
@@ -95,7 +94,6 @@
                         href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
                         class="slide-hit-area"
                         aria-label="Open Mon Calendar on Google Play"
-                        onclick="return openPlayStore(event);"
                     ></a>
 
                     <div class="slide-caption">
@@ -146,12 +144,11 @@
 
                 </div>
 
-
             </div>
 
 
             <!-- =========================================
-                 NAVIGATION ARROWS
+                 PREVIOUS BUTTON
             ========================================== -->
 
             <button
@@ -163,6 +160,11 @@
                 &#10094;
             </button>
 
+
+            <!-- =========================================
+                 NEXT BUTTON
+            ========================================== -->
+
             <button
                 type="button"
                 class="next"
@@ -171,7 +173,6 @@
             >
                 &#10095;
             </button>
-
 
         </div>
 
@@ -211,24 +212,24 @@
 
 
         <!-- =============================================
-             CTA
+             CTA SECTION
         ============================================== -->
 
         <div class="cta-section">
 
-            <button
-                type="button"
+            <a
+                href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
                 class="cta-button"
-                onclick="openPlayStore(event)"
             >
                 Get Mon Calendar
-            </button>
+            </a>
 
         </div>
 
-
     </div>
 
+
+    <!-- JavaScript -->
 
     <script src="script.js"></script>
 
