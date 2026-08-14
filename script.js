@@ -1,11 +1,13 @@
 let slideIndex = 1;
 let slideTimer;
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.mtw.moncalendar';
 
 // Initialize slideshow
 document.addEventListener('DOMContentLoaded', function() {
     showSlide(slideIndex);
     autoSlide();
     autoCenterView();
+    initSlideLinks();
 });
 
 window.addEventListener('load', autoCenterView);
@@ -59,6 +61,23 @@ function autoSlide() {
         showSlide(slideIndex);
         autoSlide();
     }, 5000); // Change slide every 5 seconds
+}
+
+function initSlideLinks() {
+    document.querySelectorAll('[data-play-store-link]').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            openPlayStore(link.getAttribute('href') || PLAY_STORE_URL);
+        });
+    });
+}
+
+function openPlayStore(url) {
+    const playStoreUrl = url || PLAY_STORE_URL;
+
+    // Works reliably in Android WebView and mobile browsers.
+    window.location.assign(playStoreUrl);
 }
 
 function autoCenterView() {
