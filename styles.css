@@ -1,6 +1,11 @@
+/* =====================================================
+   RESET
+===================================================== */
+
 * {
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
 }
 
@@ -8,6 +13,7 @@
 html,
 body {
     width: 100%;
+    height: 100%;
 }
 
 
@@ -16,13 +22,36 @@ html {
 }
 
 
+/* =====================================================
+   BODY
+===================================================== */
+
 body {
+
     font-family:
         "Segoe UI",
         Tahoma,
         Geneva,
         Verdana,
         sans-serif;
+
+
+    width: 100%;
+
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+
+    display: flex;
+
+
+    justify-content: center;
+    align-items: center;
+
+
+    padding: 20px;
+
 
     background:
         linear-gradient(
@@ -31,76 +60,44 @@ body {
             #764ba2 100%
         );
 
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-
-    min-height: 100vh;
-    min-height: 100dvh;
-
-    padding: 20px;
-
-    padding-top:
-        max(
-            20px,
-            env(safe-area-inset-top)
-        );
-
-    padding-right:
-        max(
-            20px,
-            env(safe-area-inset-right)
-        );
-
-    padding-bottom:
-        max(
-            20px,
-            env(safe-area-inset-bottom)
-        );
-
-    padding-left:
-        max(
-            20px,
-            env(safe-area-inset-left)
-        );
 
     overflow-x: hidden;
 }
 
 
 /* =====================================================
-   CONTAINER
+   AD CONTAINER
 ===================================================== */
 
 .ad-container {
+
     position: relative;
 
+
     width: 100%;
+
+
     max-width: 800px;
 
-    max-height: 90vh;
-    max-height: 90dvh;
 
-    background: transparent;
+    display: flex;
 
-    border-radius: 12px;
+
+    flex-direction: column;
+
 
     overflow: hidden;
 
-    display: flex;
-    flex-direction: column;
+
+    border-radius: 12px;
+
+
+    background: transparent;
+
 
     box-shadow:
         0 10px 40px
-        rgba(
-            0,
-            0,
-            0,
-            0.30
-        );
+        rgba(0, 0, 0, 0.30);
 }
 
 
@@ -109,28 +106,43 @@ body {
 ===================================================== */
 
 .slideshow-wrapper {
+
     position: relative;
+
 
     width: 100%;
 
-    flex: 1;
 
     min-height: 220px;
+
+
     max-height: 420px;
+
 
     aspect-ratio: 16 / 9;
 
-    background: #000;
 
     overflow: hidden;
+
+
+    background: #000;
 }
 
 
+/* =====================================================
+   SLIDES CONTAINER
+===================================================== */
+
 .slides-container {
+
     position: relative;
 
+
     width: 100%;
+
+
     height: 100%;
+
 
     overflow: hidden;
 }
@@ -141,39 +153,62 @@ body {
 ===================================================== */
 
 .slide {
+
     position: absolute;
+
 
     top: 0;
     left: 0;
 
+
     width: 100%;
+
+
     height: 100%;
+
 
     opacity: 0;
 
+
     visibility: hidden;
+
 
     pointer-events: none;
 
+
     z-index: 1;
 
+
     transition:
-        opacity 0.5s ease-in-out;
+        opacity 0.5s ease;
 }
 
 
+/* =====================================================
+   ACTIVE SLIDE
+===================================================== */
+
 .slide.active {
+
     opacity: 1;
+
 
     visibility: visible;
 
+
     pointer-events: auto;
+
 
     z-index: 2;
 }
 
 
+/* =====================================================
+   STORE SLIDE
+===================================================== */
+
 .slide--store.active {
+
     z-index: 3;
 }
 
@@ -183,188 +218,170 @@ body {
 ===================================================== */
 
 .slide img {
+
     position: relative;
+
 
     z-index: 1;
 
+
     display: block;
 
+
     width: 100%;
+
+
     height: 100%;
 
+
     object-fit: cover;
+
+
     object-position: center;
+
 
     pointer-events: none;
 
+
     user-select: none;
+
+
     -webkit-user-select: none;
+
 
     -webkit-user-drag: none;
 
+
     -webkit-touch-callout: none;
 }
 
 
 /* =====================================================
-   CLICKABLE AREA
+   FULL IMAGE CLICK AREA
 ===================================================== */
 
 .slide-hit-area {
+
     position: absolute;
+
 
     inset: 0;
 
+
     z-index: 50;
+
 
     display: block;
 
+
     width: 100%;
+
+
     height: 100%;
+
 
     background: transparent;
 
-    text-decoration: none;
 
     cursor: pointer;
 
+
     pointer-events: auto;
+
 
     touch-action: manipulation;
 
+
+    text-decoration: none;
+
+
     -webkit-tap-highlight-color:
-        rgba(
-            0,
-            0,
-            0,
-            0.05
-        );
+        rgba(0, 0, 0, 0.05);
+
 
     -webkit-touch-callout: none;
-
-    user-select: none;
-    -webkit-user-select: none;
 }
 
+
+/* Touch feedback */
 
 .slide-hit-area:active {
+
     background:
-        rgba(
-            0,
-            0,
-            0,
-            0.03
-        );
+        rgba(0, 0, 0, 0.04);
 }
 
 
 /* =====================================================
-   CAPTION
-===================================================== */
-
-.slide-caption {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: 20px;
-
-    z-index: 20;
-
-    padding: 15px;
-
-    background:
-        rgba(
-            0,
-            0,
-            0,
-            0.60
-        );
-
-    color: white;
-
-    text-align: center;
-
-    font-size: 18px;
-
-    font-weight: 500;
-
-    display: none;
-
-    pointer-events: none;
-}
-
-
-/* =====================================================
-   PREV/NEXT
+   ARROWS
 ===================================================== */
 
 .prev,
 .next {
+
     position: absolute;
+
 
     top: 50%;
 
+
+    transform:
+        translateY(-50%);
+
+
     z-index: 100;
 
-    width: 60px;
 
-    margin-top: -30px;
+    width: 55px;
 
-    padding: 16px;
 
-    border: none;
+    padding: 15px;
 
-    border-radius: 4px;
+
+    border: 0;
+
 
     background:
-        rgba(
-            0,
-            0,
-            0,
-            0.50
-        );
+        rgba(0, 0, 0, 0.50);
 
-    color: white;
+
+    color: #fff;
+
 
     font-size: 24px;
 
+
     font-weight: bold;
+
 
     cursor: pointer;
 
-    user-select: none;
-    -webkit-user-select: none;
 
     touch-action: manipulation;
 
+
     -webkit-tap-highlight-color:
         transparent;
-
-    transition:
-        background 0.3s ease;
 }
 
 
 .prev {
+
     left: 0;
 }
 
 
 .next {
+
     right: 0;
 }
 
 
 .prev:hover,
 .next:hover {
+
     background:
-        rgba(
-            0,
-            0,
-            0,
-            0.80
-        );
+        rgba(0, 0, 0, 0.80);
 }
 
 
@@ -373,95 +390,54 @@ body {
 ===================================================== */
 
 .dots-container {
+
     text-align: center;
 
-    padding: 0;
+
+    padding: 6px;
+
 
     background: transparent;
 }
 
 
 .dot {
-    display: inline-block;
 
     width: 12px;
+
+
     height: 12px;
 
-    margin: 0 6px;
 
-    background-color: #bbb;
+    margin: 0 5px;
+
+
+    padding: 0;
+
+
+    border: 0;
+
 
     border-radius: 50%;
 
+
+    background: #bbb;
+
+
     cursor: pointer;
+
 
     touch-action: manipulation;
 
+
     -webkit-tap-highlight-color:
         transparent;
-
-    transition:
-        background-color 0.3s ease;
 }
 
 
 .dot.active {
-    background-color: #667eea;
-}
 
-
-/* =====================================================
-   CTA
-===================================================== */
-
-.cta-section {
-    padding: 0;
-
-    text-align: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #667eea 0%,
-            #764ba2 100%
-        );
-
-    display: none;
-}
-
-
-.cta-button {
-    display: inline-block;
-
-    padding: 14px 40px;
-
-    border-radius: 25px;
-
-    background: white;
-
-    color: #667eea;
-
-    text-decoration: none;
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    touch-action: manipulation;
-
-    -webkit-tap-highlight-color:
-        transparent;
-
-    box-shadow:
-        0 4px 15px
-        rgba(
-            0,
-            0,
-            0,
-            0.20
-        );
+    background: #667eea;
 }
 
 
@@ -472,17 +448,15 @@ body {
 @media screen and (max-width: 768px) {
 
     body {
+
         padding: 10px;
     }
 
 
-    .ad-container {
-        max-height: 100dvh;
-    }
-
-
     .slideshow-wrapper {
+
         min-height: 180px;
+
 
         max-height: 50dvh;
     }
@@ -490,21 +464,14 @@ body {
 
     .prev,
     .next {
+
         width: 45px;
+
 
         padding: 10px;
 
+
         font-size: 18px;
-
-        margin-top: -22px;
-    }
-
-
-    .dot {
-        width: 10px;
-        height: 10px;
-
-        margin: 0 4px;
     }
 }
 
@@ -516,19 +483,21 @@ body {
 @media screen and (max-width: 480px) {
 
     body {
+
         padding: 8px;
     }
 
 
     .ad-container {
-        border-radius: 8px;
 
-        max-height: 100dvh;
+        border-radius: 8px;
     }
 
 
     .slideshow-wrapper {
+
         min-height: 160px;
+
 
         max-height: 45dvh;
     }
@@ -536,123 +505,168 @@ body {
 
     .prev,
     .next {
+
         width: 40px;
+
 
         padding: 8px;
 
-        font-size: 16px;
 
-        margin-top: -20px;
+        font-size: 16px;
+    }
+
+
+    .dot {
+
+        width: 10px;
+
+
+        height: 10px;
     }
 }
 
 
 /* =====================================================
-   FLUTTER WEBVIEW BANNER MODE
+   FLUTTER 100PX BANNER MODE
 ===================================================== */
 
 @media screen and (max-height: 140px) {
 
     html,
     body {
+
         width: 100%;
+
+
         height: 100%;
+
 
         min-height: 100px;
     }
 
 
     body {
-        width: 100%;
+
+        margin: 0;
+
+
+        padding: 0;
+
 
         min-height: 100px;
 
-        margin: 0;
-        padding: 0;
 
         background: transparent;
+
 
         align-items: stretch;
     }
 
 
     .ad-container {
+
         width: 100%;
+
 
         max-width: none;
 
+
         height: 100px;
+
+
         min-height: 100px;
+
+
         max-height: 100px;
+
 
         border-radius: 0;
 
-        box-shadow: none;
 
-        overflow: hidden;
+        box-shadow: none;
     }
 
 
     .slideshow-wrapper {
+
         width: 100%;
 
+
         height: 100px;
+
+
         min-height: 100px;
+
+
         max-height: 100px;
 
+
         aspect-ratio: auto;
-
-        overflow: hidden;
     }
 
 
-    .slides-container {
-        width: 100%;
-        height: 100px;
-    }
-
-
+    .slides-container,
     .slide {
+
         width: 100%;
+
+
         height: 100px;
     }
 
 
     .slide img {
+
         width: 100%;
+
+
         height: 100%;
+
 
         object-fit: contain;
 
+
         object-position: center;
+
 
         background: #000;
     }
 
 
+    /*
+       IMPORTANT:
+       Keep clickable link above image.
+    */
+
     .slide-hit-area {
+
         display: block;
+
 
         position: absolute;
 
+
         inset: 0;
+
 
         z-index: 50;
 
-        width: 100%;
-        height: 100%;
 
         pointer-events: auto;
+
 
         touch-action: manipulation;
     }
 
 
-    .dots-container,
+    /*
+       Hide controls in Flutter banner.
+    */
+
     .prev,
     .next,
-    .slide-caption,
-    .cta-section {
+    .dots-container {
+
         display: none;
     }
 }
@@ -663,6 +677,7 @@ body {
 ===================================================== */
 
 .fade {
+
     animation:
         fade 0.5s ease-in-out;
 }
@@ -674,7 +689,25 @@ body {
         opacity: 0;
     }
 
+
     to {
         opacity: 1;
+    }
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .slide,
+    .fade {
+
+        animation: none;
+
+
+        transition: none;
     }
 }
