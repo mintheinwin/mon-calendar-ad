@@ -1,15 +1,18 @@
+/* =====================================================
+   MON CALENDAR SLIDESHOW
+===================================================== */
+
 let slideIndex = 1;
-let slideTimer;
+let slideTimer = null;
 
 
-// Google Play URL
 const PLAY_STORE_URL =
     'https://play.google.com/store/apps/details?id=com.mtw.moncalendar';
 
 
-// =====================================================
-// INITIALIZE
-// =====================================================
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 document.addEventListener(
     'DOMContentLoaded',
@@ -17,134 +20,129 @@ document.addEventListener(
 
         showSlide(slideIndex);
 
-        autoSlide();
-
-        autoCenterView();
-
-        setupStoreLinks();
+        startAutoSlide();
     }
 );
 
 
-window.addEventListener(
-    'load',
-    autoCenterView
-);
-
-
-window.addEventListener(
-    'resize',
-    autoCenterView
-);
-
-
-// =====================================================
-// SLIDESHOW CONTROLS
-// =====================================================
-
-function changeSlide(n) {
-
-    stopAutoSlide();
-
-    slideIndex += n;
-
-    showSlide(slideIndex);
-
-    autoSlide();
-}
-
-
-function currentSlide(n) {
-
-    stopAutoSlide();
-
-    slideIndex = n;
-
-    showSlide(slideIndex);
-
-    autoSlide();
-}
-
-
-// =====================================================
-// SHOW SLIDE
-// =====================================================
+/* =====================================================
+   SHOW SLIDE
+===================================================== */
 
 function showSlide(n) {
 
     const slides =
-        document.getElementsByClassName('slide');
+        document.querySelectorAll('.slide');
 
     const dots =
-        document.getElementsByClassName('dot');
+        document.querySelectorAll('.dot');
 
 
-    if (!slides.length) {
+    if (slides.length === 0) {
         return;
     }
 
+
+    /* Loop forward */
 
     if (n > slides.length) {
         slideIndex = 1;
     }
 
 
+    /* Loop backward */
+
     if (n < 1) {
         slideIndex = slides.length;
     }
 
 
-    for (
-        let i = 0;
-        i < slides.length;
-        i++
-    ) {
+    /* Hide everything */
 
-        slides[i]
-            .classList
-            .remove('active');
+    slides.forEach(function (slide) {
+
+        slide.classList.remove('active');
+
+    });
+
+
+    dots.forEach(function (dot) {
+
+        dot.classList.remove('active');
+
+    });
+
+
+    /* Show current slide */
+
+    const currentSlide =
+        slides[slideIndex - 1];
+
+
+    if (currentSlide) {
+
+        currentSlide.classList.add('active');
+
     }
 
 
-    for (
-        let i = 0;
-        i < dots.length;
-        i++
-    ) {
+    /* Activate dot */
 
-        dots[i]
-            .classList
-            .remove('active');
-    }
+    const currentDot =
+        dots[slideIndex - 1];
 
 
-    slides[
-        slideIndex - 1
-    ]
-        .classList
-        .add('active');
+    if (currentDot) {
 
+        currentDot.classList.add('active');
 
-    if (
-        dots[
-            slideIndex - 1
-        ]
-    ) {
-
-        dots[
-            slideIndex - 1
-        ]
-            .classList
-            .add('active');
     }
 }
 
 
-// =====================================================
-// AUTO SLIDE
-// =====================================================
+/* =====================================================
+   NEXT / PREVIOUS
+===================================================== */
 
-function autoSlide() {
+function changeSlide(direction) {
+
+    stopAutoSlide();
+
+
+    slideIndex += direction;
+
+
+    showSlide(slideIndex);
+
+
+    startAutoSlide();
+}
+
+
+/* =====================================================
+   DOT CLICK
+===================================================== */
+
+function currentSlide(number) {
+
+    stopAutoSlide();
+
+
+    slideIndex = number;
+
+
+    showSlide(slideIndex);
+
+
+    startAutoSlide();
+}
+
+
+/* =====================================================
+   AUTO SLIDESHOW
+===================================================== */
+
+function startAutoSlide() {
 
     stopAutoSlide();
 
@@ -155,105 +153,132 @@ function autoSlide() {
 
                 slideIndex++;
 
+
                 showSlide(slideIndex);
 
-                autoSlide();
+
+                startAutoSlide();
 
             },
+
             5000
         );
 }
 
 
-// =====================================================
-// STOP AUTO SLIDE
-// =====================================================
+/* =====================================================
+   STOP AUTO SLIDESHOW
+===================================================== */
 
 function stopAutoSlide() {
 
-    if (slideTimer) {
+    if (slideTimer !== null) {
 
         clearTimeout(slideTimer);
 
+
         slideTimer = null;
+
     }
 }
 
 
-// =====================================================
-// SETUP GOOGLE PLAY LINKS
-// =====================================================
+/* =====================================================
+   OPEN EXTERNAL LINK
 
-function setupStoreLinks() {
+   IMPORTANT:
 
-    const links =
-        document.querySelectorAll(
-            '.slide-hit-area, .cta-button'
-        );
+   No intent://
+   No market://
 
+   Only HTTPS.
 
-    links.forEach(
-        function (link) {
+===================================================== */
 
-            link.addEventListener(
-                'click',
-                function () {
-
-                    stopAutoSlide();
-
-                }
-            );
-
-        }
-    );
-}
-
-
-// =====================================================
-// OPTIONAL WINDOW.OPEN FUNCTION
-//
-// You can test this manually if your WebView
-// supports new windows.
-//
-// Example:
-// onclick="return openPlayStore(event);"
-// =====================================================
-
-function openPlayStore(event) {
+function openExternalLink(event, url) {
 
     if (event) {
+
         event.preventDefault();
+
         event.stopPropagation();
+
     }
 
 
     stopAutoSlide();
 
 
+    const targetUrl =
+        url || PLAY_STORE_URL;
+
+
+    /*
+     * Try opening a new browsing context.
+     *
+     * In Chrome/browser this normally creates
+     * a new tab/window.
+     *
+     * In Flutter WebView the result depends on
+     * the WebView's native configuration.
+     */
+
     try {
 
-        const newWindow =
+        const externalWindow =
             window.open(
-                PLAY_STORE_URL,
+                targetUrl,
                 '_blank'
             );
 
 
         /*
-        If window.open is blocked,
-        use the normal HTTPS URL.
-        */
+         * window.open() may return null when
+         * new-window requests are blocked.
+         */
 
-        if (!newWindow) {
+        if (externalWindow) {
 
-            window.location.href =
-                PLAY_STORE_URL;
+            try {
+
+                externalWindow.opener = null;
+
+            } catch (error) {
+
+                // Ignore.
+            }
+
+
+            return false;
         }
 
     } catch (error) {
 
+        console.log(
+            'window.open failed:',
+            error
+        );
+    }
+
+
+    /*
+     * Fallback:
+     *
+     * If the WebView/browser does not support
+     * a new window, navigate normally.
+     */
+
+    try {
+
         window.location.href =
-            PLAY_STORE_URL;
+            targetUrl;
+
+    } catch (error) {
+
+        console.log(
+            'Navigation failed:',
+            error
+        );
     }
 
 
@@ -261,83 +286,9 @@ function openPlayStore(event) {
 }
 
 
-// =====================================================
-// AUTO CENTER VIEW
-// =====================================================
-
-function autoCenterView() {
-
-    // Flutter banner mode
-    if (
-        window.matchMedia(
-            '(max-height: 140px)'
-        ).matches
-    ) {
-
-        return;
-    }
-
-
-    const adContainer =
-        document.querySelector(
-            '.ad-container'
-        );
-
-
-    if (!adContainer) {
-        return;
-    }
-
-
-    const containerRect =
-        adContainer
-            .getBoundingClientRect();
-
-
-    const absoluteTop =
-        window.scrollY +
-        containerRect.top;
-
-
-    const targetScrollTop =
-        absoluteTop -
-        (
-            window.innerHeight / 2
-        ) +
-        (
-            containerRect.height / 2
-        );
-
-
-    const maxScrollTop =
-        Math.max(
-            0,
-            document.documentElement
-                .scrollHeight -
-            window.innerHeight
-        );
-
-
-    const boundedScrollTop =
-        Math.max(
-            0,
-            Math.min(
-                targetScrollTop,
-                maxScrollTop
-            )
-        );
-
-
-    window.scrollTo({
-        top: boundedScrollTop,
-        behavior: 'smooth'
-    });
-}
-
-
-// =====================================================
-// VISIBILITY
-// =====================================================
+/* =====================================================
+   PAUSE WHEN PAGE IS HIDDEN
+===================================================== */
 
 document.addEventListener(
     'visibilitychange',
@@ -349,8 +300,8 @@ document.addEventListener(
 
         } else {
 
-            autoSlide();
-        }
+            startAutoSlide();
 
+        }
     }
 );
