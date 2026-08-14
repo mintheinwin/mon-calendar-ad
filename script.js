@@ -1,173 +1,258 @@
 let slideIndex = 1;
 let slideTimer;
-const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.mtw.moncalendar';
 
-// Initialize slideshow
-document.addEventListener('DOMContentLoaded', function() {
+const APP_ID = 'com.mtw.moncalendar';
+
+const PLAY_STORE_URL =
+    `https://play.google.com/store/apps/details?id=${APP_ID}`;
+
+
+// =====================================================
+// INITIALIZE
+// =====================================================
+
+document.addEventListener('DOMContentLoaded', function () {
     showSlide(slideIndex);
     autoSlide();
     autoCenterView();
-    initSlideLinks();
 });
 
 window.addEventListener('load', autoCenterView);
 window.addEventListener('resize', autoCenterView);
 
-// Next/previous controls
+
+// =====================================================
+// SLIDESHOW CONTROLS
+// =====================================================
+
 function changeSlide(n) {
     clearTimeout(slideTimer);
-    showSlide(slideIndex += n);
+
+    slideIndex += n;
+
+    showSlide(slideIndex);
     autoSlide();
 }
 
-// Thumbnail image controls
+
 function currentSlide(n) {
     clearTimeout(slideTimer);
-    showSlide(slideIndex = n);
+
+    slideIndex = n;
+
+    showSlide(slideIndex);
     autoSlide();
 }
 
-// Main slide display function
+
+// =====================================================
+// SHOW CURRENT SLIDE
+// =====================================================
+
 function showSlide(n) {
-    let slides = document.getElementsByClassName('slide');
-    let dots = document.getElementsByClassName('dot');
+    const slides = document.getElementsByClassName('slide');
+    const dots = document.getElementsByClassName('dot');
+
+    if (!slides || slides.length === 0) {
+        return;
+    }
 
     if (n > slides.length) {
         slideIndex = 1;
     }
+
     if (n < 1) {
         slideIndex = slides.length;
     }
 
+    // Hide all slides
     for (let i = 0; i < slides.length; i++) {
         slides[i].classList.remove('active');
     }
+
+    // Remove active class from all dots
     for (let i = 0; i < dots.length; i++) {
         dots[i].classList.remove('active');
     }
 
+    // Show selected slide
     slides[slideIndex - 1].classList.add('active');
-    dots[slideIndex - 1].classList.add('active');
+
+    // Activate selected dot
+    if (dots[slideIndex - 1]) {
+        dots[slideIndex - 1].classList.add('active');
+    }
 }
 
+
+// =====================================================
+// AUTO SLIDESHOW
+// =====================================================
+
 function autoSlide() {
-    slideTimer = setTimeout(function() {
+    clearTimeout(slideTimer);
+
+    slideTimer = setTimeout(function () {
+
         slideIndex++;
+
         showSlide(slideIndex);
+
         autoSlide();
+
     }, 5000);
 }
 
-function openPlayStore(url) {
-    const playStoreUrl = url || PLAY_STORE_URL;
 
-    // Flutter / Android WebView JavaScript channels
-    if (window.OpenUrl && typeof window.OpenUrl.postMessage === 'function') {
-        window.OpenUrl.postMessage(playStoreUrl);
-        return true;
-    }
-    if (window.PlayStore && typeof window.PlayStore.postMessage === 'function') {
-        window.PlayStore.postMessage(playStoreUrl);
-        return true;
-    }
-    if (window.flutter_inappwebview && typeof window.flutter_inappwebview.callHandler === 'function') {
-        window.flutter_inappwebview.callHandler('openUrl', playStoreUrl);
-        return true;
-    }
+// =====================================================
+// OPEN GOOGLE PLAY
+// =====================================================
 
-    // Hidden anchor click often works when location.href is blocked in WebView
-    const tempLink = document.createElement('a');
-    tempLink.href = playStoreUrl;
-    tempLink.target = '_blank';
-    tempLink.rel = 'noopener noreferrer';
-    tempLink.style.display = 'none';
-    document.body.appendChild(tempLink);
-    tempLink.click();
-    document.body.removeChild(tempLink);
+function openPlayStore(event) {
 
-    // Fallback navigation
-    try {
-        (window.top || window).location.href = playStoreUrl;
-    } catch (error) {
-        window.location.href = playStoreUrl;
-    }
-
-    return true;
-}
-
-function handlePlayStoreClick(event, url) {
-    clearTimeout(slideTimer);
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
-    openPlayStore(url);
+
+    clearTimeout(slideTimer);
+
+    console.log('Opening Google Play:', PLAY_STORE_URL);
+
+
+    // =================================================
+    // OPTION 1
+    // Flutter webview_flutter JavaScript Channel
+    //
+    // Flutter:
+    //
+    // ..addJavaScriptChannel(
+    //   'OpenUrl',
+    //   onMessageReceived: ...
+    // )
+    //
+    // Creates:
+    // window.OpenUrl.postMessage(...)
+    // =================================================
+
+    if (
+        window.OpenUrl &&
+        typeof window.OpenUrl.postMessage === 'function'
+    ) {
+
+        console.log('Using Flutter OpenUrl channel');
+
+        window.OpenUrl.postMessage(PLAY_STORE_URL);
+
+        return false;
+    }
+
+
+    // =================================================
+    // OPTION 2
+    // Optional PlayStore JavaScript Channel
+    // =================================================
+
+    if (
+        window.PlayStore &&
+        typeof window.PlayStore.postMessage === 'function'
+    ) {
+
+        console.log('Using Flutter PlayStore channel');
+
+        window.PlayStore.postMessage(PLAY_STORE_URL);
+
+        return false;
+    }
+
+
+    // =================================================
+    // OPTION 3
+    // flutter_inappwebview
+    // =================================================
+
+    if (
+        window.flutter_inappwebview &&
+        typeof window.flutter_inappwebview.callHandler === 'function'
+    ) {
+
+        console.log('Using flutter_inappwebview');
+
+        window.flutter_inappwebview.callHandler(
+            'openUrl',
+            PLAY_STORE_URL
+        );
+
+        return false;
+    }
+
+
+    // =================================================
+    // OPTION 4
+    // Normal browser fallback
+    // =================================================
+
+    console.log('Using normal browser navigation');
+
+    window.location.href = PLAY_STORE_URL;
+
     return false;
 }
 
-function initSlideLinks() {
-    document.querySelectorAll('.slide-hit-area').forEach(function(link) {
-        const url = link.getAttribute('href') || PLAY_STORE_URL;
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchMoved = false;
 
-        link.addEventListener('touchstart', function(event) {
-            touchMoved = false;
-            clearTimeout(slideTimer);
+// =====================================================
+// CTA BUTTON
+// =====================================================
 
-            if (event.touches && event.touches.length > 0) {
-                touchStartX = event.touches[0].clientX;
-                touchStartY = event.touches[0].clientY;
-            }
-        }, { passive: true });
-
-        link.addEventListener('touchmove', function(event) {
-            if (!event.touches || event.touches.length === 0) {
-                return;
-            }
-
-            const deltaX = Math.abs(event.touches[0].clientX - touchStartX);
-            const deltaY = Math.abs(event.touches[0].clientY - touchStartY);
-            if (deltaX > 8 || deltaY > 8) {
-                touchMoved = true;
-            }
-        }, { passive: true });
-
-        link.addEventListener('touchend', function(event) {
-            if (touchMoved) {
-                autoSlide();
-                return;
-            }
-
-            event.preventDefault();
-            event.stopPropagation();
-            openPlayStore(url);
-        });
-
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            openPlayStore(url);
-        });
-    });
+function handleCTA(event) {
+    return openPlayStore(event);
 }
 
+
+// =====================================================
+// AUTO CENTER VIEW
+// =====================================================
+
 function autoCenterView() {
+
+    // Do not auto-scroll in small Flutter banner mode
     if (window.matchMedia('(max-height: 140px)').matches) {
         return;
     }
 
-    const adContainer = document.querySelector('.ad-container');
+    const adContainer =
+        document.querySelector('.ad-container');
+
     if (!adContainer) {
         return;
     }
 
-    const containerRect = adContainer.getBoundingClientRect();
-    const absoluteTop = window.scrollY + containerRect.top;
-    const targetScrollTop = absoluteTop - (window.innerHeight / 2) + (containerRect.height / 2);
-    const maxScrollTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    const boundedScrollTop = Math.max(0, Math.min(targetScrollTop, maxScrollTop));
+    const containerRect =
+        adContainer.getBoundingClientRect();
+
+    const absoluteTop =
+        window.scrollY + containerRect.top;
+
+    const targetScrollTop =
+        absoluteTop
+        - (window.innerHeight / 2)
+        + (containerRect.height / 2);
+
+    const maxScrollTop =
+        Math.max(
+            0,
+            document.documentElement.scrollHeight
+            - window.innerHeight
+        );
+
+    const boundedScrollTop =
+        Math.max(
+            0,
+            Math.min(
+                targetScrollTop,
+                maxScrollTop
+            )
+        );
 
     window.scrollTo({
         top: boundedScrollTop,
@@ -175,6 +260,24 @@ function autoCenterView() {
     });
 }
 
-function handleCTA() {
-    openPlayStore(PLAY_STORE_URL);
-}
+
+// =====================================================
+// OPTIONAL:
+// Pause slideshow when browser/app is hidden
+// =====================================================
+
+document.addEventListener(
+    'visibilitychange',
+    function () {
+
+        if (document.hidden) {
+
+            clearTimeout(slideTimer);
+
+        } else {
+
+            autoSlide();
+
+        }
+    }
+);
