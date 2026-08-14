@@ -32,16 +32,13 @@ function showSlide(n) {
     let slides = document.getElementsByClassName('slide');
     let dots = document.getElementsByClassName('dot');
 
-    // Wrap around: if slide number is greater than total slides, go back to 1
     if (n > slides.length) {
         slideIndex = 1;
     }
-    // If slide number is less than 1, go to last slide
     if (n < 1) {
         slideIndex = slides.length;
     }
 
-    // Remove active class from all slides and dots
     for (let i = 0; i < slides.length; i++) {
         slides[i].classList.remove('active');
     }
@@ -49,39 +46,114 @@ function showSlide(n) {
         dots[i].classList.remove('active');
     }
 
-    // Add active class to current slide and dot
     slides[slideIndex - 1].classList.add('active');
     dots[slideIndex - 1].classList.add('active');
 }
 
-// Auto advance slides every 5 seconds
 function autoSlide() {
     slideTimer = setTimeout(function() {
         slideIndex++;
         showSlide(slideIndex);
         autoSlide();
-    }, 5000); // Change slide every 5 seconds
-}
-
-function initSlideLinks() {
-    document.querySelectorAll('[data-play-store-link]').forEach(function(link) {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            openPlayStore(link.getAttribute('href') || PLAY_STORE_URL);
-        });
-    });
+    }, 5000);
 }
 
 function openPlayStore(url) {
     const playStoreUrl = url || PLAY_STORE_URL;
 
-    // Works reliably in Android WebView and mobile browsers.
-    window.location.assign(playStoreUrl);
+    // Flutter / Android WebView JavaScript channels
+    if (window.OpenUrl && typeof window.OpenUrl.postMessage === 'function') {
+        window.OpenUrl.postMessage(playStoreUrl);
+        return true;
+    }
+    if (window.PlayStore && typeof window.PlayStore.postMessage === 'function') {
+        window.PlayStore.postMessage(playStoreUrl);
+        return true;
+    }
+    if (window.flutter_inappwebview && typeof window.flutter_inappwebview.callHandler === 'function') {
+        window.flutter_inappwebview.callHandler('openUrl', playStoreUrl);
+        return true;
+    }
+
+    // Hidden anchor click often works when location.href is blocked in WebView
+    const tempLink = document.createElement('a');
+    tempLink.href = playStoreUrl;
+    tempLink.target = '_blank';
+    tempLink.rel = 'noopener noreferrer';
+    tempLink.style.display = 'none';
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+
+    // Fallback navigation
+    try {
+        (window.top || window).location.href = playStoreUrl;
+    } catch (error) {
+        window.location.href = playStoreUrl;
+    }
+
+    return true;
+}
+
+function handlePlayStoreClick(event, url) {
+    clearTimeout(slideTimer);
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    openPlayStore(url);
+    return false;
+}
+
+function initSlideLinks() {
+    document.querySelectorAll('.slide-hit-area').forEach(function(link) {
+        const url = link.getAttribute('href') || PLAY_STORE_URL;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchMoved = false;
+
+        link.addEventListener('touchstart', function(event) {
+            touchMoved = false;
+            clearTimeout(slideTimer);
+
+            if (event.touches && event.touches.length > 0) {
+                touchStartX = event.touches[0].clientX;
+                touchStartY = event.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        link.addEventListener('touchmove', function(event) {
+            if (!event.touches || event.touches.length === 0) {
+                return;
+            }
+
+            const deltaX = Math.abs(event.touches[0].clientX - touchStartX);
+            const deltaY = Math.abs(event.touches[0].clientY - touchStartY);
+            if (deltaX > 8 || deltaY > 8) {
+                touchMoved = true;
+            }
+        }, { passive: true });
+
+        link.addEventListener('touchend', function(event) {
+            if (touchMoved) {
+                autoSlide();
+                return;
+            }
+
+            event.preventDefault();
+            event.stopPropagation();
+            openPlayStore(url);
+        });
+
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            openPlayStore(url);
+        });
+    });
 }
 
 function autoCenterView() {
-    // In very short banner mode we keep content top-aligned.
     if (window.matchMedia('(max-height: 140px)').matches) {
         return;
     }
@@ -103,9 +175,6 @@ function autoCenterView() {
     });
 }
 
-// Call to action button handler
 function handleCTA() {
-    alert('Thank you for your interest! Redirecting to offer page...');
-    // You can replace the alert with actual navigation
-    // window.location.href = 'https://example.com/offer';
+    openPlayStore(PLAY_STORE_URL);
 }
