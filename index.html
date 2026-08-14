@@ -1,69 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ad Slideshow</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <title>Mon Calendar</title>
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
 </head>
+
 <body>
+
     <div class="ad-container">
+
         <div class="slideshow-wrapper">
-            <!-- Slides -->
+
             <div class="slides-container">
-                <div class="slide fade slide--store" data-slide="1">
-                    <img src="images/slide-1.svg" alt="Product 1">
-                    <a href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
-                       class="slide-hit-area"
-                       aria-label="Open Mon Calendar on Google Play"
-                       onclick="return handlePlayStoreClick(event, this.href);"></a>
-                    <div class="slide-caption">Premium Product Collection 2024</div>
+
+
+                <!-- =====================================
+                     SLIDE 1
+                     CLICKABLE -> GOOGLE PLAY
+                ====================================== -->
+
+                <div
+                    class="slide fade slide--store"
+                    data-slide="1"
+                >
+
+                    <img
+                        src="images/slide-1.svg"
+                        alt="Mon Calendar App Update"
+                    >
+
+                    <a
+                        href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
+                        class="slide-hit-area"
+                        aria-label="Open Mon Calendar on Google Play"
+                        onclick="return openPlayStore(event);"
+                    ></a>
+
+                    <div class="slide-caption">
+                        Mon Calendar App Update
+                    </div>
+
                 </div>
 
-                <div class="slide fade">
-                    <img src="images/slide-2.svg" alt="Product 2">
-                    <div class="slide-caption">Summer Sale - 50% Off</div>
+
+                <!-- =====================================
+                     SLIDE 2
+                ====================================== -->
+
+                <div
+                    class="slide fade"
+                    data-slide="2"
+                >
+
+                    <img
+                        src="images/slide-2.svg"
+                        alt="Mon Calendar"
+                    >
+
+                    <div class="slide-caption">
+                        Mon Myanmar Calendar
+                    </div>
+
                 </div>
 
-                <div class="slide fade slide--store" data-slide="3">
-                    <img src="images/slide-3.svg" alt="Product 3">
-                    <a href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
-                       class="slide-hit-area"
-                       aria-label="Open Mon Calendar on Google Play"
-                       onclick="return handlePlayStoreClick(event, this.href);"></a>
-                    <div class="slide-caption">Summer Collection Launch</div>
+
+                <!-- =====================================
+                     SLIDE 3
+                     CLICKABLE -> GOOGLE PLAY
+                ====================================== -->
+
+                <div
+                    class="slide fade slide--store"
+                    data-slide="3"
+                >
+
+                    <img
+                        src="images/slide-3.svg"
+                        alt="Download Mon Calendar"
+                    >
+
+                    <a
+                        href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
+                        class="slide-hit-area"
+                        aria-label="Open Mon Calendar on Google Play"
+                        onclick="return openPlayStore(event);"
+                    ></a>
+
+                    <div class="slide-caption">
+                        Download Mon Calendar
+                    </div>
+
                 </div>
 
-                <div class="slide fade">
-                    <img src="images/slide-4.svg" alt="Product 4">
-                    <div class="slide-caption">Limited Time Offer - Act Now!</div>
+
+                <!-- =====================================
+                     SLIDE 4
+                ====================================== -->
+
+                <div
+                    class="slide fade"
+                    data-slide="4"
+                >
+
+                    <img
+                        src="images/slide-4.svg"
+                        alt="Mon Calendar Features"
+                    >
+
+                    <div class="slide-caption">
+                        Mon Calendar Features
+                    </div>
+
                 </div>
 
-                <div class="slide fade">
-                    <img src="images/slide-5.svg" alt="Product 5">
-                    <div class="slide-caption">Exclusive Member Benefits</div>
+
+                <!-- =====================================
+                     SLIDE 5
+                ====================================== -->
+
+                <div
+                    class="slide fade"
+                    data-slide="5"
+                >
+
+                    <img
+                        src="images/slide-5.svg"
+                        alt="Mon Calendar"
+                    >
+
+                    <div class="slide-caption">
+                        Mon Calendar
+                    </div>
+
                 </div>
+
+
             </div>
 
-            <!-- Navigation Arrows -->
-            <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
-            <a class="next" onclick="changeSlide(1)">&#10095;</a>
+
+            <!-- =========================================
+                 NAVIGATION ARROWS
+            ========================================== -->
+
+            <button
+                type="button"
+                class="prev"
+                onclick="changeSlide(-1)"
+                aria-label="Previous slide"
+            >
+                &#10094;
+            </button>
+
+            <button
+                type="button"
+                class="next"
+                onclick="changeSlide(1)"
+                aria-label="Next slide"
+            >
+                &#10095;
+            </button>
+
+
         </div>
 
-        <!-- Dots for slide indicators -->
+
+        <!-- =============================================
+             DOT INDICATORS
+        ============================================== -->
+
         <div class="dots-container">
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
-            <span class="dot" onclick="currentSlide(4)"></span>
-            <span class="dot" onclick="currentSlide(5)"></span>
+
+            <span
+                class="dot"
+                onclick="currentSlide(1)"
+            ></span>
+
+            <span
+                class="dot"
+                onclick="currentSlide(2)"
+            ></span>
+
+            <span
+                class="dot"
+                onclick="currentSlide(3)"
+            ></span>
+
+            <span
+                class="dot"
+                onclick="currentSlide(4)"
+            ></span>
+
+            <span
+                class="dot"
+                onclick="currentSlide(5)"
+            ></span>
+
         </div>
 
-        <!-- Call to Action Button -->
+
+        <!-- =============================================
+             CTA
+        ============================================== -->
+
         <div class="cta-section">
+
+            <button
+                type="button"
+                class="cta-button"
+                onclick="openPlayStore(event)"
+            >
+                Get Mon Calendar
+            </button>
+
         </div>
+
+
     </div>
 
+
     <script src="script.js"></script>
+
 </body>
+
 </html>
