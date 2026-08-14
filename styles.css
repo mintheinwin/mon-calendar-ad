@@ -5,18 +5,23 @@
 * {
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
 }
 
 
 html,
 body {
+
     width: 100%;
+
 }
 
 
 html {
+
     -webkit-text-size-adjust: 100%;
+
 }
 
 
@@ -33,6 +38,7 @@ body {
         Verdana,
         sans-serif;
 
+
     background:
         linear-gradient(
             135deg,
@@ -40,17 +46,24 @@ body {
             #764ba2 100%
         );
 
+
     display: flex;
 
     justify-content: center;
+
     align-items: center;
+
 
     width: 100%;
 
+
     min-height: 100vh;
+
     min-height: 100dvh;
 
+
     padding: 20px;
+
 
     padding-top:
         max(
@@ -58,11 +71,13 @@ body {
             env(safe-area-inset-top)
         );
 
+
     padding-right:
         max(
             20px,
             env(safe-area-inset-right)
         );
+
 
     padding-bottom:
         max(
@@ -70,13 +85,16 @@ body {
             env(safe-area-inset-bottom)
         );
 
+
     padding-left:
         max(
             20px,
             env(safe-area-inset-left)
         );
 
+
     overflow-x: hidden;
+
 }
 
 
@@ -88,20 +106,30 @@ body {
 
     position: relative;
 
+
     width: 100%;
+
     max-width: 800px;
 
+
     max-height: 90vh;
+
     max-height: 90dvh;
 
-    display: flex;
-    flex-direction: column;
 
     background: transparent;
 
+
     border-radius: 12px;
 
+
     overflow: hidden;
+
+
+    display: flex;
+
+    flex-direction: column;
+
 
     box-shadow:
         0 10px 40px
@@ -111,29 +139,38 @@ body {
             0,
             0.30
         );
+
 }
 
 
 /* =====================================================
-   SLIDESHOW
+   SLIDESHOW WRAPPER
 ===================================================== */
 
 .slideshow-wrapper {
 
     position: relative;
 
+
     width: 100%;
+
 
     flex: 1;
 
+
     min-height: 220px;
+
     max-height: 420px;
+
 
     aspect-ratio: 16 / 9;
 
+
     background: #000;
 
+
     overflow: hidden;
+
 }
 
 
@@ -145,122 +182,192 @@ body {
 
     position: relative;
 
+
     width: 100%;
+
     height: 100%;
 
+
     overflow: hidden;
+
 }
 
 
 /* =====================================================
-   SLIDE
+   SLIDES
 ===================================================== */
 
 .slide {
 
     position: absolute;
 
+
     top: 0;
+
     left: 0;
 
+
     width: 100%;
+
     height: 100%;
+
 
     opacity: 0;
 
+
     visibility: hidden;
+
 
     pointer-events: none;
 
+
     z-index: 1;
+
 
     transition:
         opacity
         0.5s
         ease-in-out;
+
 }
 
+
+/* =====================================================
+   ACTIVE SLIDE
+===================================================== */
 
 .slide.active {
 
     opacity: 1;
 
+
     visibility: visible;
+
 
     pointer-events: auto;
 
+
     z-index: 2;
-}
 
-
-/* Clickable store slides */
-
-.slide--store.active {
-
-    z-index: 3;
 }
 
 
 /* =====================================================
-   IMAGES
+   GOOGLE PLAY SLIDE
+===================================================== */
+
+.slide--store.active {
+
+    z-index: 3;
+
+}
+
+
+/* =====================================================
+   SLIDE IMAGE
 ===================================================== */
 
 .slide img {
 
     position: relative;
 
+
     z-index: 1;
+
 
     display: block;
 
+
     width: 100%;
+
     height: 100%;
+
 
     object-fit: cover;
 
+
     object-position: center;
 
+
+    /*
+    Very important.
+
+    Image itself should not
+    capture the touch.
+
+    The <a> layer above it
+    receives the click.
+    */
+
     pointer-events: none;
+
 
     user-select: none;
 
     -webkit-user-select: none;
 
+
     -webkit-user-drag: none;
 
+
     -webkit-touch-callout: none;
+
 }
 
 
 /* =====================================================
-   PLAY STORE CLICK AREA
+   CLICKABLE SLIDE AREA
+
+   Used on slides 1 and 3.
 ===================================================== */
 
 .slide-hit-area {
 
     position: absolute;
 
+
     top: 0;
+
     right: 0;
+
     bottom: 0;
+
     left: 0;
 
-    z-index: 30;
+
+    /*
+    Keep above image.
+    */
+
+    z-index: 50;
+
 
     display: block;
 
+
     width: 100%;
+
     height: 100%;
 
-    background:
-        transparent;
+
+    background: transparent;
+
 
     text-decoration: none;
 
+
     cursor: pointer;
 
-    touch-action:
-        manipulation;
+
+    /*
+    Important for mobile/WebView.
+    */
+
+    pointer-events: auto;
+
+
+    touch-action: manipulation;
+
 
     -webkit-tap-highlight-color:
         rgba(
@@ -270,20 +377,21 @@ body {
             0.05
         );
 
+
     -webkit-touch-callout:
         none;
 
-    user-select:
-        none;
 
-    -webkit-user-select:
-        none;
+    user-select: none;
+
+    -webkit-user-select: none;
+
 }
 
 
-/*
-Small feedback when user taps image.
-*/
+/* =====================================================
+   TAP FEEDBACK
+===================================================== */
 
 .slide-hit-area:active {
 
@@ -294,6 +402,7 @@ Small feedback when user taps image.
             0,
             0.03
         );
+
 }
 
 
@@ -305,13 +414,19 @@ Small feedback when user taps image.
 
     position: absolute;
 
+
     left: 0;
+
     right: 0;
+
     bottom: 20px;
+
 
     z-index: 20;
 
+
     padding: 15px;
+
 
     background:
         rgba(
@@ -321,22 +436,29 @@ Small feedback when user taps image.
             0.60
         );
 
+
     color: white;
+
 
     text-align: center;
 
+
     font-size: 18px;
+
 
     font-weight: 500;
 
+
     display: none;
 
+
     pointer-events: none;
+
 }
 
 
 /* =====================================================
-   PREVIOUS / NEXT
+   PREVIOUS / NEXT BUTTONS
 ===================================================== */
 
 .prev,
@@ -344,19 +466,27 @@ Small feedback when user taps image.
 
     position: absolute;
 
+
     top: 50%;
+
 
     z-index: 100;
 
+
     width: 60px;
+
 
     margin-top: -30px;
 
+
     padding: 16px;
+
 
     border: none;
 
+
     border-radius: 4px;
+
 
     background:
         rgba(
@@ -366,40 +496,64 @@ Small feedback when user taps image.
             0.50
         );
 
+
     color: white;
+
 
     font-size: 24px;
 
+
     font-weight: bold;
 
+
     cursor: pointer;
+
 
     user-select: none;
 
     -webkit-user-select: none;
 
-    touch-action:
-        manipulation;
+
+    touch-action: manipulation;
+
 
     -webkit-tap-highlight-color:
         transparent;
+
 
     transition:
         background
         0.3s
         ease;
+
 }
 
+
+/* =====================================================
+   PREVIOUS
+===================================================== */
 
 .prev {
+
     left: 0;
+
 }
 
+
+/* =====================================================
+   NEXT
+===================================================== */
 
 .next {
+
     right: 0;
+
 }
 
+
+/* =====================================================
+   ARROW HOVER
+===================================================== */
 
 .prev:hover,
 .next:hover {
@@ -411,8 +565,13 @@ Small feedback when user taps image.
             0,
             0.80
         );
+
 }
 
+
+/* =====================================================
+   ARROW ACTIVE
+===================================================== */
 
 .prev:active,
 .next:active {
@@ -424,77 +583,103 @@ Small feedback when user taps image.
             0,
             0.90
         );
+
 }
 
 
 /* =====================================================
-   DOTS
+   DOT CONTAINER
 ===================================================== */
 
 .dots-container {
 
     text-align: center;
 
+
     padding: 0;
 
-    background:
-        transparent;
+
+    background: transparent;
+
 }
 
+
+/* =====================================================
+   DOT
+===================================================== */
 
 .dot {
 
     display: inline-block;
 
+
     width: 12px;
+
     height: 12px;
+
 
     margin: 0 6px;
 
-    background-color:
-        #bbb;
 
-    border-radius:
-        50%;
+    background-color: #bbb;
+
+
+    border-radius: 50%;
+
 
     cursor: pointer;
+
+
+    touch-action: manipulation;
+
+
+    -webkit-tap-highlight-color:
+        transparent;
+
 
     transition:
         background-color
         0.3s
         ease;
 
-    touch-action:
-        manipulation;
-
-    -webkit-tap-highlight-color:
-        transparent;
 }
 
+
+/* =====================================================
+   ACTIVE DOT
+===================================================== */
 
 .dot.active {
 
     background-color:
         #667eea;
+
 }
 
+
+/* =====================================================
+   DOT HOVER
+===================================================== */
 
 .dot:hover {
 
     background-color:
         #999;
+
 }
 
 
 /* =====================================================
-   CTA
+   CTA SECTION
 ===================================================== */
 
 .cta-section {
 
     padding: 0;
 
+
     text-align: center;
+
 
     background:
         linear-gradient(
@@ -503,36 +688,60 @@ Small feedback when user taps image.
             #764ba2 100%
         );
 
+
     display: none;
+
 }
 
 
+/* =====================================================
+   CTA BUTTON
+===================================================== */
+
 .cta-button {
 
-    padding: 14px 40px;
+    display: inline-block;
 
-    border: none;
+
+    padding:
+        14px 40px;
+
 
     border-radius:
         25px;
 
+
     background:
         white;
+
 
     color:
         #667eea;
 
+
+    text-decoration:
+        none;
+
+
     font-size:
         16px;
+
 
     font-weight:
         600;
 
+
     cursor:
         pointer;
 
+
     touch-action:
         manipulation;
+
+
+    -webkit-tap-highlight-color:
+        transparent;
+
 
     box-shadow:
         0 4px 15px
@@ -543,20 +752,28 @@ Small feedback when user taps image.
             0.20
         );
 
+
     transition:
         all
         0.3s
         ease;
+
 }
 
+
+/* =====================================================
+   CTA HOVER
+===================================================== */
 
 .cta-button:hover {
 
     transform:
         translateY(-2px);
 
+
     background:
         #f0f0f0;
+
 
     box-shadow:
         0 6px 20px
@@ -566,13 +783,19 @@ Small feedback when user taps image.
             0,
             0.30
         );
+
 }
 
+
+/* =====================================================
+   CTA ACTIVE
+===================================================== */
 
 .cta-button:active {
 
     transform:
         translateY(0);
+
 }
 
 
@@ -586,11 +809,13 @@ Small feedback when user taps image.
 
         padding: 10px;
 
+
         padding-top:
             max(
                 10px,
                 env(safe-area-inset-top)
             );
+
 
         padding-right:
             max(
@@ -598,17 +823,20 @@ Small feedback when user taps image.
                 env(safe-area-inset-right)
             );
 
+
         padding-bottom:
             max(
                 10px,
                 env(safe-area-inset-bottom)
             );
 
+
         padding-left:
             max(
                 10px,
                 env(safe-area-inset-left)
             );
+
     }
 
 
@@ -616,6 +844,7 @@ Small feedback when user taps image.
 
         max-height:
             100dvh;
+
     }
 
 
@@ -624,8 +853,10 @@ Small feedback when user taps image.
         min-height:
             180px;
 
+
         max-height:
             50dvh;
+
     }
 
 
@@ -635,14 +866,18 @@ Small feedback when user taps image.
         width:
             45px;
 
+
         padding:
             10px;
+
 
         font-size:
             18px;
 
+
         margin-top:
             -22px;
+
     }
 
 
@@ -651,12 +886,16 @@ Small feedback when user taps image.
         width:
             10px;
 
+
         height:
             10px;
 
+
         margin:
             0 4px;
+
     }
+
 }
 
 
@@ -668,8 +907,8 @@ Small feedback when user taps image.
 
     body {
 
-        padding:
-            8px;
+        padding: 8px;
+
 
         padding-top:
             max(
@@ -677,11 +916,13 @@ Small feedback when user taps image.
                 env(safe-area-inset-top)
             );
 
+
         padding-right:
             max(
                 8px,
                 env(safe-area-inset-right)
             );
+
 
         padding-bottom:
             max(
@@ -689,11 +930,13 @@ Small feedback when user taps image.
                 env(safe-area-inset-bottom)
             );
 
+
         padding-left:
             max(
                 8px,
                 env(safe-area-inset-left)
             );
+
     }
 
 
@@ -702,8 +945,10 @@ Small feedback when user taps image.
         border-radius:
             8px;
 
+
         max-height:
             100dvh;
+
     }
 
 
@@ -712,8 +957,10 @@ Small feedback when user taps image.
         min-height:
             160px;
 
+
         max-height:
             45dvh;
+
     }
 
 
@@ -723,22 +970,27 @@ Small feedback when user taps image.
         width:
             40px;
 
+
         padding:
             8px;
+
 
         font-size:
             16px;
 
+
         margin-top:
             -20px;
+
     }
+
 }
 
 
 /* =====================================================
    FLUTTER WEBVIEW BANNER MODE
 
-   Your Flutter WebView is approximately 100px high.
+   For a WebView around 100px tall.
 ===================================================== */
 
 @media screen and (max-height: 140px) {
@@ -746,36 +998,38 @@ Small feedback when user taps image.
     html,
     body {
 
-        width:
-            100%;
+        width: 100%;
 
-        height:
-            100%;
 
-        min-height:
-            100px;
+        height: 100%;
+
+
+        min-height: 100px;
+
     }
 
 
     body {
 
-        width:
-            100%;
+        width: 100%;
 
-        min-height:
-            100px;
 
-        margin:
-            0;
+        min-height: 100px;
 
-        padding:
-            0;
+
+        margin: 0;
+
+
+        padding: 0;
+
 
         background:
             transparent;
 
+
         align-items:
             stretch;
+
     }
 
 
@@ -784,26 +1038,34 @@ Small feedback when user taps image.
         width:
             100%;
 
+
         max-width:
             none;
+
 
         height:
             100px;
 
+
         min-height:
             100px;
+
 
         max-height:
             100px;
 
+
         border-radius:
             0;
+
 
         box-shadow:
             none;
 
+
         overflow:
             hidden;
+
     }
 
 
@@ -812,20 +1074,26 @@ Small feedback when user taps image.
         width:
             100%;
 
+
         height:
             100px;
+
 
         min-height:
             100px;
 
+
         max-height:
             100px;
+
 
         aspect-ratio:
             auto;
 
+
         overflow:
             hidden;
+
     }
 
 
@@ -834,8 +1102,10 @@ Small feedback when user taps image.
         width:
             100%;
 
+
         height:
             100px;
+
     }
 
 
@@ -844,8 +1114,10 @@ Small feedback when user taps image.
         width:
             100%;
 
+
         height:
             100px;
+
     }
 
 
@@ -854,46 +1126,88 @@ Small feedback when user taps image.
         width:
             100%;
 
+
         height:
             100%;
+
+
+        /*
+        Show complete SVG without
+        cutting left/right content.
+        */
 
         object-fit:
             contain;
 
+
         object-position:
             center;
 
+
         background:
             #000;
+
     }
 
 
-    /*
-    IMPORTANT
+    /* ===============================================
+       IMPORTANT
 
-    DO NOT hide this.
-
-    This is what makes slides
-    1 and 3 clickable.
-    */
+       Keep clickable area enabled
+       inside Flutter WebView.
+    =============================================== */
 
     .slide-hit-area {
 
         display:
             block;
 
+
+        position:
+            absolute;
+
+
+        top:
+            0;
+
+
+        right:
+            0;
+
+
+        bottom:
+            0;
+
+
+        left:
+            0;
+
+
         z-index:
             50;
 
+
+        width:
+            100%;
+
+
+        height:
+            100%;
+
+
         pointer-events:
             auto;
+
+
+        touch-action:
+            manipulation;
+
     }
 
 
-    /*
-    Hide controls for the
-    small Flutter banner.
-    */
+    /* ===============================================
+       Hide UI controls in banner mode
+    =============================================== */
 
     .dots-container,
     .prev,
@@ -903,12 +1217,14 @@ Small feedback when user taps image.
 
         display:
             none;
+
     }
+
 }
 
 
 /* =====================================================
-   FADE
+   FADE ANIMATION
 ===================================================== */
 
 .fade {
@@ -917,6 +1233,7 @@ Small feedback when user taps image.
         fade
         0.5s
         ease-in-out;
+
 }
 
 
@@ -926,18 +1243,22 @@ Small feedback when user taps image.
 
         opacity:
             0;
+
     }
+
 
     to {
 
         opacity:
             1;
+
     }
+
 }
 
 
 /* =====================================================
-   REDUCE MOTION
+   ACCESSIBILITY
 ===================================================== */
 
 @media (
@@ -955,7 +1276,10 @@ Small feedback when user taps image.
         animation:
             none;
 
+
         transition:
             none;
+
     }
+
 }
