@@ -1,16 +1,8 @@
-// =====================================================
-// MON CALENDAR SLIDESHOW
-// =====================================================
-
 let slideIndex = 1;
-
 let slideTimer;
 
 
-// =====================================================
-// GOOGLE PLAY URL
-// =====================================================
-
+// Google Play URL
 const PLAY_STORE_URL =
     'https://play.google.com/store/apps/details?id=com.mtw.moncalendar';
 
@@ -29,40 +21,25 @@ document.addEventListener(
 
         autoCenterView();
 
+        setupStoreLinks();
     }
 );
 
-
-// =====================================================
-// WINDOW LOAD
-// =====================================================
 
 window.addEventListener(
     'load',
-    function () {
-
-        autoCenterView();
-
-    }
+    autoCenterView
 );
 
-
-// =====================================================
-// WINDOW RESIZE
-// =====================================================
 
 window.addEventListener(
     'resize',
-    function () {
-
-        autoCenterView();
-
-    }
+    autoCenterView
 );
 
 
 // =====================================================
-// NEXT / PREVIOUS SLIDE
+// SLIDESHOW CONTROLS
 // =====================================================
 
 function changeSlide(n) {
@@ -74,13 +51,8 @@ function changeSlide(n) {
     showSlide(slideIndex);
 
     autoSlide();
-
 }
 
-
-// =====================================================
-// DOT NAVIGATION
-// =====================================================
 
 function currentSlide(n) {
 
@@ -91,7 +63,6 @@ function currentSlide(n) {
     showSlide(slideIndex);
 
     autoSlide();
-
 }
 
 
@@ -102,52 +73,26 @@ function currentSlide(n) {
 function showSlide(n) {
 
     const slides =
-        document.getElementsByClassName(
-            'slide'
-        );
-
+        document.getElementsByClassName('slide');
 
     const dots =
-        document.getElementsByClassName(
-            'dot'
-        );
+        document.getElementsByClassName('dot');
 
 
-    // No slides
-    if (
-        !slides ||
-        slides.length === 0
-    ) {
-
+    if (!slides.length) {
         return;
-
     }
 
 
-    // Go back to first slide
-    if (
-        n > slides.length
-    ) {
-
+    if (n > slides.length) {
         slideIndex = 1;
-
     }
 
 
-    // Go to last slide
-    if (
-        n < 1
-    ) {
-
-        slideIndex =
-            slides.length;
-
+    if (n < 1) {
+        slideIndex = slides.length;
     }
 
-
-    // ===============================================
-    // HIDE ALL SLIDES
-    // ===============================================
 
     for (
         let i = 0;
@@ -157,16 +102,9 @@ function showSlide(n) {
 
         slides[i]
             .classList
-            .remove(
-                'active'
-            );
-
+            .remove('active');
     }
 
-
-    // ===============================================
-    // DEACTIVATE ALL DOTS
-    // ===============================================
 
     for (
         let i = 0;
@@ -176,29 +114,16 @@ function showSlide(n) {
 
         dots[i]
             .classList
-            .remove(
-                'active'
-            );
-
+            .remove('active');
     }
 
-
-    // ===============================================
-    // SHOW CURRENT SLIDE
-    // ===============================================
 
     slides[
         slideIndex - 1
     ]
         .classList
-        .add(
-            'active'
-        );
+        .add('active');
 
-
-    // ===============================================
-    // ACTIVATE CURRENT DOT
-    // ===============================================
 
     if (
         dots[
@@ -210,12 +135,8 @@ function showSlide(n) {
             slideIndex - 1
         ]
             .classList
-            .add(
-                'active'
-            );
-
+            .add('active');
     }
-
 }
 
 
@@ -234,19 +155,13 @@ function autoSlide() {
 
                 slideIndex++;
 
-
-                showSlide(
-                    slideIndex
-                );
-
+                showSlide(slideIndex);
 
                 autoSlide();
 
             },
-
             5000
         );
-
 }
 
 
@@ -256,76 +171,103 @@ function autoSlide() {
 
 function stopAutoSlide() {
 
-    if (
-        slideTimer
-    ) {
+    if (slideTimer) {
 
-        clearTimeout(
-            slideTimer
-        );
+        clearTimeout(slideTimer);
 
-
-        slideTimer =
-            null;
-
+        slideTimer = null;
     }
-
 }
 
 
 // =====================================================
-// OPTIONAL PLAY STORE FUNCTION
+// SETUP GOOGLE PLAY LINKS
+// =====================================================
+
+function setupStoreLinks() {
+
+    const links =
+        document.querySelectorAll(
+            '.slide-hit-area, .cta-button'
+        );
+
+
+    links.forEach(
+        function (link) {
+
+            link.addEventListener(
+                'click',
+                function () {
+
+                    stopAutoSlide();
+
+                }
+            );
+
+        }
+    );
+}
+
+
+// =====================================================
+// OPTIONAL WINDOW.OPEN FUNCTION
 //
-// Uses HTTPS ONLY.
+// You can test this manually if your WebView
+// supports new windows.
 //
-// No intent://
-// No market://
-//
-// This function is available if you want to use:
-// onclick="openPlayStore(event)"
-//
-// But slide 1 and slide 3 do NOT require it.
-// They use normal <a href=""> links.
+// Example:
+// onclick="return openPlayStore(event);"
 // =====================================================
 
 function openPlayStore(event) {
 
-    if (
-        event
-    ) {
-
+    if (event) {
         event.preventDefault();
-
         event.stopPropagation();
-
     }
 
 
     stopAutoSlide();
 
 
-    window.location.href =
-        PLAY_STORE_URL;
+    try {
+
+        const newWindow =
+            window.open(
+                PLAY_STORE_URL,
+                '_blank'
+            );
+
+
+        /*
+        If window.open is blocked,
+        use the normal HTTPS URL.
+        */
+
+        if (!newWindow) {
+
+            window.location.href =
+                PLAY_STORE_URL;
+        }
+
+    } catch (error) {
+
+        window.location.href =
+            PLAY_STORE_URL;
+    }
 
 
     return false;
-
 }
 
 
 // =====================================================
-// AUTO CENTER
+// AUTO CENTER VIEW
 // =====================================================
 
 function autoCenterView() {
 
-    /*
-    Flutter banner mode.
-
-    Do not scroll when WebView
-    height is around 100px.
-    */
-
+    // Flutter banner mode
     if (
         window.matchMedia(
             '(max-height: 140px)'
@@ -333,7 +275,6 @@ function autoCenterView() {
     ) {
 
         return;
-
     }
 
 
@@ -343,12 +284,8 @@ function autoCenterView() {
         );
 
 
-    if (
-        !adContainer
-    ) {
-
+    if (!adContainer) {
         return;
-
     }
 
 
@@ -365,23 +302,18 @@ function autoCenterView() {
     const targetScrollTop =
         absoluteTop -
         (
-            window.innerHeight /
-            2
+            window.innerHeight / 2
         ) +
         (
-            containerRect.height /
-            2
+            containerRect.height / 2
         );
 
 
     const maxScrollTop =
         Math.max(
             0,
-
-            document
-                .documentElement
+            document.documentElement
                 .scrollHeight -
-
             window.innerHeight
         );
 
@@ -389,7 +321,6 @@ function autoCenterView() {
     const boundedScrollTop =
         Math.max(
             0,
-
             Math.min(
                 targetScrollTop,
                 maxScrollTop
@@ -398,38 +329,27 @@ function autoCenterView() {
 
 
     window.scrollTo({
-
-        top:
-            boundedScrollTop,
-
-        behavior:
-            'smooth'
-
+        top: boundedScrollTop,
+        behavior: 'smooth'
     });
-
 }
 
 
 // =====================================================
-// PAGE VISIBILITY
+// VISIBILITY
 // =====================================================
 
 document.addEventListener(
     'visibilitychange',
     function () {
 
-        if (
-            document.hidden
-        ) {
+        if (document.hidden) {
 
             stopAutoSlide();
 
-        }
-
-        else {
+        } else {
 
             autoSlide();
-
         }
 
     }
