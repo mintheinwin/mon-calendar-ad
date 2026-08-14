@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
 
@@ -11,202 +10,193 @@
 
     <title>Mon Calendar Slideshow</title>
 
-    <link
-        rel="stylesheet"
-        href="styles.css"
-    >
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <div class="ad-container">
+<div class="ad-container">
 
-        <div class="slideshow-wrapper">
+    <div class="slideshow-wrapper">
 
-            <div class="slides-container">
+        <div class="slides-container">
 
-                <!-- SLIDE 1 - GOOGLE PLAY -->
-                <div
-                    class="slide fade slide--store"
-                    data-slide="1"
+            <!-- ==============================
+                 SLIDE 1 - CLICKABLE
+            =============================== -->
+
+            <div
+                class="slide fade slide--store"
+                data-slide="1"
+            >
+
+                <img
+                    src="images/slide-1.svg"
+                    alt="Mon Calendar App Update"
                 >
 
-                    <img
-                        src="images/slide-1.svg"
-                        alt="Mon Calendar App Update"
-                    >
-
-                    <a
-                        href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="slide-hit-area"
-                        aria-label="Open Mon Calendar on Google Play"
-                    ></a>
-
-                    <div class="slide-caption">
-                        Mon Calendar App Update
-                    </div>
-
-                </div>
-
-
-                <!-- SLIDE 2 -->
-                <div
-                    class="slide fade"
-                    data-slide="2"
-                >
-
-                    <img
-                        src="images/slide-2.svg"
-                        alt="Mon Calendar"
-                    >
-
-                    <div class="slide-caption">
-                        Mon Myanmar Calendar
-                    </div>
-
-                </div>
-
-
-                <!-- SLIDE 3 - GOOGLE PLAY -->
-                <div
-                    class="slide fade slide--store"
-                    data-slide="3"
-                >
-
-                    <img
-                        src="images/slide-3.svg"
-                        alt="Download Mon Calendar"
-                    >
-
-                    <a
-                        href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="slide-hit-area"
-                        aria-label="Open Mon Calendar on Google Play"
-                    ></a>
-
-                    <div class="slide-caption">
-                        Download Mon Calendar
-                    </div>
-
-                </div>
-
-
-                <!-- SLIDE 4 -->
-                <div
-                    class="slide fade"
-                    data-slide="4"
-                >
-
-                    <img
-                        src="images/slide-4.svg"
-                        alt="Mon Calendar Features"
-                    >
-
-                    <div class="slide-caption">
-                        Mon Calendar Features
-                    </div>
-
-                </div>
-
-
-                <!-- SLIDE 5 -->
-                <div
-                    class="slide fade"
-                    data-slide="5"
-                >
-
-                    <img
-                        src="images/slide-5.svg"
-                        alt="Mon Calendar"
-                    >
-
-                    <div class="slide-caption">
-                        Mon Calendar
-                    </div>
-
-                </div>
+                <a
+                    href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="slide-hit-area"
+                    aria-label="Open Mon Calendar on Google Play"
+                    onclick="return openExternalLink(event, this.href);"
+                ></a>
 
             </div>
 
 
-            <!-- PREVIOUS -->
-            <button
-                type="button"
-                class="prev"
-                onclick="changeSlide(-1)"
-                aria-label="Previous slide"
+            <!-- ==============================
+                 SLIDE 2
+            =============================== -->
+
+            <div
+                class="slide fade"
+                data-slide="2"
             >
-                &#10094;
-            </button>
+
+                <img
+                    src="images/slide-2.svg"
+                    alt="Mon Calendar"
+                >
+
+            </div>
 
 
-            <!-- NEXT -->
-            <button
-                type="button"
-                class="next"
-                onclick="changeSlide(1)"
-                aria-label="Next slide"
+            <!-- ==============================
+                 SLIDE 3 - CLICKABLE
+            =============================== -->
+
+            <div
+                class="slide fade slide--store"
+                data-slide="3"
             >
-                &#10095;
-            </button>
+
+                <img
+                    src="images/slide-3.svg"
+                    alt="Download Mon Calendar"
+                >
+
+                <a
+                    href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="slide-hit-area"
+                    aria-label="Open Mon Calendar on Google Play"
+                    onclick="return openExternalLink(event, this.href);"
+                ></a>
+
+            </div>
+
+
+            <!-- ==============================
+                 SLIDE 4
+            =============================== -->
+
+            <div
+                class="slide fade"
+                data-slide="4"
+            >
+
+                <img
+                    src="images/slide-4.svg"
+                    alt="Mon Calendar Features"
+                >
+
+            </div>
+
+
+            <!-- ==============================
+                 SLIDE 5
+            =============================== -->
+
+            <div
+                class="slide fade"
+                data-slide="5"
+            >
+
+                <img
+                    src="images/slide-5.svg"
+                    alt="Mon Calendar"
+                >
+
+            </div>
 
         </div>
 
 
-        <!-- DOTS -->
-        <div class="dots-container">
+        <!-- PREVIOUS -->
 
-            <span
-                class="dot"
-                onclick="currentSlide(1)"
-            ></span>
-
-            <span
-                class="dot"
-                onclick="currentSlide(2)"
-            ></span>
-
-            <span
-                class="dot"
-                onclick="currentSlide(3)"
-            ></span>
-
-            <span
-                class="dot"
-                onclick="currentSlide(4)"
-            ></span>
-
-            <span
-                class="dot"
-                onclick="currentSlide(5)"
-            ></span>
-
-        </div>
+        <button
+            type="button"
+            class="prev"
+            onclick="changeSlide(-1)"
+            aria-label="Previous slide"
+        >
+            &#10094;
+        </button>
 
 
-        <!-- CTA -->
-        <div class="cta-section">
+        <!-- NEXT -->
 
-            <a
-                href="https://play.google.com/store/apps/details?id=com.mtw.moncalendar"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="cta-button"
-            >
-                Get Mon Calendar
-            </a>
-
-        </div>
+        <button
+            type="button"
+            class="next"
+            onclick="changeSlide(1)"
+            aria-label="Next slide"
+        >
+            &#10095;
+        </button>
 
     </div>
 
 
-    <script src="script.js"></script>
+    <!-- DOTS -->
+
+    <div class="dots-container">
+
+        <button
+            type="button"
+            class="dot"
+            onclick="currentSlide(1)"
+            aria-label="Slide 1"
+        ></button>
+
+        <button
+            type="button"
+            class="dot"
+            onclick="currentSlide(2)"
+            aria-label="Slide 2"
+        ></button>
+
+        <button
+            type="button"
+            class="dot"
+            onclick="currentSlide(3)"
+            aria-label="Slide 3"
+        ></button>
+
+        <button
+            type="button"
+            class="dot"
+            onclick="currentSlide(4)"
+            aria-label="Slide 4"
+        ></button>
+
+        <button
+            type="button"
+            class="dot"
+            onclick="currentSlide(5)"
+            aria-label="Slide 5"
+        ></button>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
-
 </html>
