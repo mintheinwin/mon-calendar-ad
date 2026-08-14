@@ -3,39 +3,16 @@
 // =====================================================
 
 let slideIndex = 1;
+
 let slideTimer;
 
 
 // =====================================================
-// GOOGLE PLAY SETTINGS
+// GOOGLE PLAY URL
 // =====================================================
 
-const APP_ID = 'com.mtw.moncalendar';
-
 const PLAY_STORE_URL =
-    'https://play.google.com/store/apps/details?id=' +
-    APP_ID;
-
-
-/*
-Android Intent URL
-
-This asks Android to open the Google Play Store app.
-
-If Google Play cannot handle the request,
-browser_fallback_url points to the normal
-Google Play website.
-*/
-
-const PLAY_STORE_INTENT =
-    'intent://details?id=' +
-    APP_ID +
-    '#Intent;' +
-    'scheme=market;' +
-    'package=com.android.vending;' +
-    'S.browser_fallback_url=' +
-    encodeURIComponent(PLAY_STORE_URL) +
-    ';end';
+    'https://play.google.com/store/apps/details?id=com.mtw.moncalendar';
 
 
 // =====================================================
@@ -51,24 +28,41 @@ document.addEventListener(
         autoSlide();
 
         autoCenterView();
+
     }
 );
 
 
+// =====================================================
+// WINDOW LOAD
+// =====================================================
+
 window.addEventListener(
     'load',
-    autoCenterView
-);
+    function () {
 
+        autoCenterView();
 
-window.addEventListener(
-    'resize',
-    autoCenterView
+    }
 );
 
 
 // =====================================================
-// NEXT / PREVIOUS
+// WINDOW RESIZE
+// =====================================================
+
+window.addEventListener(
+    'resize',
+    function () {
+
+        autoCenterView();
+
+    }
+);
+
+
+// =====================================================
+// NEXT / PREVIOUS SLIDE
 // =====================================================
 
 function changeSlide(n) {
@@ -80,11 +74,12 @@ function changeSlide(n) {
     showSlide(slideIndex);
 
     autoSlide();
+
 }
 
 
 // =====================================================
-// DOT CONTROL
+// DOT NAVIGATION
 // =====================================================
 
 function currentSlide(n) {
@@ -96,6 +91,7 @@ function currentSlide(n) {
     showSlide(slideIndex);
 
     autoSlide();
+
 }
 
 
@@ -106,64 +102,104 @@ function currentSlide(n) {
 function showSlide(n) {
 
     const slides =
-        document.getElementsByClassName('slide');
+        document.getElementsByClassName(
+            'slide'
+        );
+
 
     const dots =
-        document.getElementsByClassName('dot');
+        document.getElementsByClassName(
+            'dot'
+        );
 
 
-    if (!slides.length) {
+    // No slides
+    if (
+        !slides ||
+        slides.length === 0
+    ) {
+
         return;
+
     }
 
 
-    // Last -> First
-    if (n > slides.length) {
+    // Go back to first slide
+    if (
+        n > slides.length
+    ) {
+
         slideIndex = 1;
+
     }
 
 
-    // First -> Last
-    if (n < 1) {
-        slideIndex = slides.length;
+    // Go to last slide
+    if (
+        n < 1
+    ) {
+
+        slideIndex =
+            slides.length;
+
     }
 
 
-    // Hide all slides
+    // ===============================================
+    // HIDE ALL SLIDES
+    // ===============================================
+
     for (
         let i = 0;
         i < slides.length;
         i++
     ) {
 
-        slides[i].classList.remove(
-            'active'
-        );
+        slides[i]
+            .classList
+            .remove(
+                'active'
+            );
+
     }
 
 
-    // Deactivate dots
+    // ===============================================
+    // DEACTIVATE ALL DOTS
+    // ===============================================
+
     for (
         let i = 0;
         i < dots.length;
         i++
     ) {
 
-        dots[i].classList.remove(
-            'active'
-        );
+        dots[i]
+            .classList
+            .remove(
+                'active'
+            );
+
     }
 
 
-    // Show slide
+    // ===============================================
+    // SHOW CURRENT SLIDE
+    // ===============================================
+
     slides[
         slideIndex - 1
-    ].classList.add(
-        'active'
-    );
+    ]
+        .classList
+        .add(
+            'active'
+        );
 
 
-    // Activate dot
+    // ===============================================
+    // ACTIVATE CURRENT DOT
+    // ===============================================
+
     if (
         dots[
             slideIndex - 1
@@ -172,10 +208,14 @@ function showSlide(n) {
 
         dots[
             slideIndex - 1
-        ].classList.add(
-            'active'
-        );
+        ]
+            .classList
+            .add(
+                'active'
+            );
+
     }
+
 }
 
 
@@ -194,15 +234,19 @@ function autoSlide() {
 
                 slideIndex++;
 
+
                 showSlide(
                     slideIndex
                 );
 
+
                 autoSlide();
 
             },
+
             5000
         );
+
 }
 
 
@@ -212,150 +256,60 @@ function autoSlide() {
 
 function stopAutoSlide() {
 
-    if (slideTimer) {
+    if (
+        slideTimer
+    ) {
 
         clearTimeout(
             slideTimer
         );
 
-        slideTimer = null;
+
+        slideTimer =
+            null;
+
     }
+
 }
 
 
 // =====================================================
-// OPEN GOOGLE PLAY
+// OPTIONAL PLAY STORE FUNCTION
+//
+// Uses HTTPS ONLY.
+//
+// No intent://
+// No market://
+//
+// This function is available if you want to use:
+// onclick="openPlayStore(event)"
+//
+// But slide 1 and slide 3 do NOT require it.
+// They use normal <a href=""> links.
 // =====================================================
 
 function openPlayStore(event) {
 
-    if (event) {
+    if (
+        event
+    ) {
 
         event.preventDefault();
 
         event.stopPropagation();
+
     }
 
 
     stopAutoSlide();
 
 
-    /*
-    Detect Android.
-
-    Flutter Android WebView normally reports
-    Android in navigator.userAgent.
-    */
-
-    const userAgent =
-        navigator.userAgent ||
-        navigator.vendor ||
-        window.opera ||
-        '';
-
-
-    const isAndroid =
-        /android/i.test(
-            userAgent
-        );
-
-
-    // =================================================
-    // ANDROID
-    // =================================================
-
-    if (isAndroid) {
-
-        try {
-
-            /*
-            First attempt:
-
-            Ask Android to open
-            Google Play Store.
-            */
-
-            window.location.href =
-                PLAY_STORE_INTENT;
-
-
-            /*
-            Fallback.
-
-            If intent:// does not work,
-            try the normal Google Play URL.
-            */
-
-            setTimeout(
-                function () {
-
-                    if (
-                        document.visibilityState ===
-                        'visible'
-                    ) {
-
-                        try {
-
-                            window.location.href =
-                                PLAY_STORE_URL;
-
-                        } catch (error) {
-
-                            console.log(
-                                'Play Store fallback failed:',
-                                error
-                            );
-                        }
-                    }
-
-                },
-                1500
-            );
-
-
-            return false;
-
-        } catch (error) {
-
-            console.log(
-                'Android Play Store intent failed:',
-                error
-            );
-        }
-    }
-
-
-    // =================================================
-    // NORMAL BROWSER FALLBACK
-    // =================================================
-
-    try {
-
-        window.location.href =
-            PLAY_STORE_URL;
-
-    } catch (error) {
-
-        console.log(
-            'Google Play navigation failed:',
-            error
-        );
-    }
+    window.location.href =
+        PLAY_STORE_URL;
 
 
     return false;
-}
 
-
-// =====================================================
-// CTA
-// =====================================================
-
-function handleCTA(event) {
-
-    return openPlayStore(
-        event
-    );
 }
 
 
@@ -366,8 +320,10 @@ function handleCTA(event) {
 function autoCenterView() {
 
     /*
-    Do not auto-scroll when running
-    as the 100px Flutter banner.
+    Flutter banner mode.
+
+    Do not scroll when WebView
+    height is around 100px.
     */
 
     if (
@@ -377,6 +333,7 @@ function autoCenterView() {
     ) {
 
         return;
+
     }
 
 
@@ -386,8 +343,12 @@ function autoCenterView() {
         );
 
 
-    if (!adContainer) {
+    if (
+        !adContainer
+    ) {
+
         return;
+
     }
 
 
@@ -416,8 +377,11 @@ function autoCenterView() {
     const maxScrollTop =
         Math.max(
             0,
-            document.documentElement
+
+            document
+                .documentElement
                 .scrollHeight -
+
             window.innerHeight
         );
 
@@ -425,6 +389,7 @@ function autoCenterView() {
     const boundedScrollTop =
         Math.max(
             0,
+
             Math.min(
                 targetScrollTop,
                 maxScrollTop
@@ -433,12 +398,15 @@ function autoCenterView() {
 
 
     window.scrollTo({
+
         top:
             boundedScrollTop,
 
         behavior:
             'smooth'
+
     });
+
 }
 
 
@@ -450,18 +418,19 @@ document.addEventListener(
     'visibilitychange',
     function () {
 
-        /*
-        Stop slideshow when Play Store,
-        another app, or another page opens.
-        */
-
-        if (document.hidden) {
+        if (
+            document.hidden
+        ) {
 
             stopAutoSlide();
 
-        } else {
+        }
+
+        else {
 
             autoSlide();
+
         }
+
     }
 );
